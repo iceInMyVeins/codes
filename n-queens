@@ -1,0 +1,59 @@
+//Function to solve the N-Queens problem (NQueens)
+//Returns - [[..Q..],[Q....], so on ]
+
+
+//prototypes of utility functions
+bool attack(vector<string> &t, int i, int col, int N);
+bool nq(vector<vector<string> > &ret, vector<string> &t, int col , int N);
+
+
+vector<vector<string> > NQueens(int A)
+{
+    vector<vector<string> > ret;
+    vector<string> t;
+    string temp = "";
+    for( int i = 0 ; i < A ; ++i )
+        temp+=".";
+    for( int i = 0 ; i < A ; ++i )
+        t.push_back(temp);
+    if(nq(ret,t,0,A)) return ret;
+}
+
+bool attack(vector<string> &t, int i, int col, int N)
+{
+    for (int x = 0; x < N; ++x)
+    {
+        for (int y = 0; y < N; ++y)
+        {
+            if (t[x][y] == 'Q')
+            {
+                if (x == i)
+                    return true;
+                if (x + y == i + col)
+                    return true;
+                if ((x - y) == (i - col))
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool nq(vector<vector<string> > &ret, vector<string> &t, int col , int N)
+{
+    if (col >= N){
+        ret.push_back(t);
+        return true;
+    }
+    bool retval = false;
+    for (int i = 0; i < N; ++i)
+    {
+        if (attack(t,i, col,N) == false)
+        {
+            t[i].replace(t[i].begin()+col,t[i].begin()+col+1,"Q");
+            retval = nq(ret,t,col + 1,N)||retval;
+            t[i].replace(t[i].begin()+col,t[i].begin()+col+1,".");
+        }
+    }
+    return retval;
+}
