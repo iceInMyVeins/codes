@@ -1,0 +1,52 @@
+//Solution to the primme-generator problem on SPOJ
+
+#include<iostream>
+#include<cmath>
+
+const double NUM = 1500000000;
+
+int main()
+{
+    int cases,flag;
+    long long int M,N;
+    long long int primes[100000];
+    primes[0] = 2;
+    primes[1] = 3;
+    long long int psize = 2;
+    long long int root;
+
+    for( long long int i = 4 ; i <= sqrt(NUM); ++i ){
+                flag = 0;
+                for( long long int p = 2 ; p <= sqrt(i) ; ++p ){
+                    if( i%p == 0 ){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if( flag == 0 ){
+                    primes[psize] = i;
+                    psize++;
+                }
+    }
+    std::cin>>cases;
+
+    while(cases--){
+        std::cin>>M>>N;
+        if( M == 1 ) M++;
+        flag = 0;
+        for( ; M <= N ; ++M ){
+            flag = 0;
+            root = sqrt(M);
+            for( int j = 0 ; primes[j] <= root ; ++j ){
+                if( !(M%primes[j]) ){
+                    flag = 1;
+                    break;
+                }
+            }
+            if( flag == 0 ) std::cout<<M<<" ";
+        }
+        std::cout<<std::endl;
+    }
+
+    return 0;
+}
